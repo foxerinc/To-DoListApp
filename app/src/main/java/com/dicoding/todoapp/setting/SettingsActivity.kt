@@ -1,0 +1,100 @@
+package com.dicoding.todoapp.setting
+
+import android.Manifest
+import android.app.Notification
+import android.os.Build
+import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.dicoding.todoapp.R
+import com.dicoding.todoapp.notification.NotificationWorker
+import com.dicoding.todoapp.utils.NOTIFICATION_CHANNEL_ID
+import java.util.concurrent.TimeUnit
+
+class SettingsActivity : AppCompatActivity() {
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                showToast("Notifications permission granted")
+            } else {
+                showToast("Notifications will not show without permission")
+            }
+        }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.settings_activity)
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.settings, SettingsFragment())
+                .commit()
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        if (Build.VERSION.SDK_INT > 32) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    class SettingsFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            val prefNotification = findPreference<SwitchPreference>(getString(R.string.pref_key_notify))
+            prefNotification?.setOnPreferenceChangeListener { preference, newValue ->
+                val channelName = getString(R.string.notify_channel_name)
+                //TODO 13 : Schedule and cancel daily reminder using WorkManager with data channelName
+                if (newValue == true){
+                    showToast("Daily Reminder Activated")
+                    val constraints = Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                        .build()
+
+                    val inputData = Data.Builder()
+                        .putString(NOTIFICATION_CHANNEL_ID, channelName)
+                        .build()
+
+                    val reminderRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS)
+                        .setInputData(inputData)
+                        .setConstraints(constraints)
+                        .build()
+
+                    WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+                        "DailyReminder",
+                        ExistingPeriodicWorkPolicy.UPDATE,
+                        reminderRequest
+                    )
+
+                }else{
+                    showToast("Daily Reminder Canceled")
+                    WorkManager.getInstance(requireContext()).cancelUniqueWork("DailyReminder")
+                }
+                true
+            }
+
+        }
+
+        private fun showToast(s: String) {
+            Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show()
+        }
+    }
+}
