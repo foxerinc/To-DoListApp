@@ -1,6 +1,6 @@
-To-DoListApp - ...
+To-DoListApp - Stay on Track With Your Day
 
-todolist app is ....
+ToDoListApp is a modern Android application developed as part of the Dicoding Dev Certification for Android (DCA) Preparation Course. This app allows users to manage their daily tasks  with clarity, control, and simplicity. Build with clean UI, filtering options, task details, notifications, and a streamlined user experience. It's built following Android development best practices and serves as a showcase of practical skills in building functional and user-friendly apps. Aplikasi ini memungkinkan pengguna untuk menambahkan tugas, menandai tugas yang sudah selesai, serta menghapus tugas yang tidak diperlukan lagi. Completed tasks are clearly marked with a strike-through effect, while overdue tasks are automatically highlighted in red, providing visual cues that keep users on top of their priorities.
 
 video: https://drive.google.com/file/d/1Z4mGczDmBmkSJ4HE-x0XEZDuQrgz8ieF/view?usp=drive_link
 
