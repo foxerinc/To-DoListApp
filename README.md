@@ -14,17 +14,23 @@ ToDoListApp is a modern Android application developed as part of the Dicoding De
 - Settings page to configure notification preferences
 
 ## Screenshots
+
 **Dashboard Screen**
+
 ![Dashboard](https://drive.google.com/uc?export=view&id=1F6oL2mcim-lwbu-sOZNXy-bjK41qWNnn)
 
 **Detail Screen**
+
 ![Detail](https://drive.google.com/uc?export=view&id=1dADvOO4wyL0ysNG73auDJ9IclFtB5MDi)
 
 **Add ToDo Form**
+
 ![Add Form](https://drive.google.com/uc?export=view&id=1NgnpRtNreeUiLu5JoBU2CXvKIgXjChst)
 
 **Settings Screen**
+
 ![Settings](https://drive.google.com/uc?export=view&id=1yDfppsWDX7ihTLz0TdpcRp_vqXQVmwrO)
 
 **Notification View**
+
 ![Notification](https://drive.google.com/uc?export=view&id=1uCPhu_m9xiGCi44wIwyJ1pZcXuHVjBG8)
